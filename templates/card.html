@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>AgileCard</title>
+      <style>
+         .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -moz-transform: translateX(-50%) translateY(-50%);
+            -webkit-transform: translateX(-50%) translateY(-50%);
+            transform: translateX(-50%) translateY(-50%);
+         }
+      </style>      
+   </head>
+   <body>
+      <div class="container">
+         <span>
+            <center>
+            <img src="{{ Link }}/static/{{ Image }}">
+            &nbsp;
+            <form action="{{ Link }}/next">
+                <input type="submit" value="ok" />
+            </form>
+            </center>
+         </span>
+      </div>
+   </body>
+</html>

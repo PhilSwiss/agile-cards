@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>AgileCards</title>
+      <style>
+         .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -moz-transform: translateX(-50%) translateY(-50%);
+            -webkit-transform: translateX(-50%) translateY(-50%);
+            transform: translateX(-50%) translateY(-50%);
+         }
+      </style>      
+   </head>
+   <body>
+      <div class="container">
+         <span>
+            <center>
+            {{ Logo|safe }}
+            <h1>{{ Message }}</h1>
+            <h1>{{ Left }} of {{ Cards }} left</h1>
+            <form action="{{ Link }}/card">
+                <input type="submit" value="pick a card" />
+            </form>
+            </center>
+         </span>
+      </div>
+   </body>
+</html>
