@@ -54,7 +54,38 @@ Test the web-application (URL: http://127.0.0.1:8080):
     cd agilecards
     python3 agilecards.py
 
-to be continued with Apache & WSGI...
+Create a config-file for Apache2:
+
+    nano /etc/apache2/sites-available/agilecards.conf
+
+Copy and paste the following lines to the config-file:
+
+    <VirtualHost *:443>
+        ServerName  agilecards.example.com
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/agilecards
+ 
+        WSGIDaemonProcess agilecards threads=2
+        WSGIScriptAlias /agilecards /var/www/agilecards/agilecards.wsgi
+        WSGIApplicationGroup %{GLOBAL}
+        <Directory agilecards>
+             WSGIProcessGroup agilecards
+             WSGIApplicationGroup %{GLOBAL}
+             Order deny,allow
+             Allow from all
+        </Directory>
+ 
+        ErrorLog ${APACHE_LOG_DIR}/agilecards-error.log
+        CustomLog ${APACHE_LOG_DIR}/agilecards-access.log combined
+    </VirtualHost>
+
+Enable the config and restart Apache:
+
+    a2ensite agilecards.example.com
+    systemctl reload apache2
+
+
+Access the web-application (URL: https://agilecards.example.com/agilecards)
     
 
 Quickstart
@@ -71,6 +102,14 @@ Files
 * **static/examplecard(1-3).(.jpg/.jpeg/.gif)** (card examples for testing, patterns by [Brandon Mills](https://btmills.github.io/geopattern/geopattern.html))
 * **templates/*.html** (templates for the rendered webpages)
 * **ask-kanban.sh** (a script to download the "Ask-Kanban"-cards by [Huge.io](https://www.hugeio.com/) from [Medium.com](https://blog.huge.io/ending-stale-stand-ups-with-ask-kanban-64de6c084d60))
+
+
+Future ideas
+============
+
+* Move the config to a separate file (agilecards.cfg)
+* Serving a favicon.ico via Flask
+* Adding a simple admin-page with: undo, reload and image-management
 
 
 Disclaimer
