@@ -52,6 +52,9 @@ print(" agilecards v.1.8 started")
 if sys.argv[0] == os.path.basename(__file__):
     # when first param of executed programm equals name
     # of current script, its running local for testing
+    testIP = testLink.split(':')[-2]
+    testIP = ''.join(chr for chr in testIP if chr.isdigit() or chr == '.')
+    testPort = testLink.split(':')[-1]
     baseLink = testLink
 else:
     baseLink = servLink
@@ -216,4 +219,4 @@ def reload():
 
 # start local flask server for testing
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080, debug=False)
+    app.run(host=testIP, port=testPort, debug=False)
