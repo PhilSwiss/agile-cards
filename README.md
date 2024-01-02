@@ -99,6 +99,7 @@ Files
 =====
 
 * **agilecards.py** (the web-application itself)
+* **agilecards.wsgi** (config for Apache mod_wsgi)
 * **static/logo.png** (official Agile Cards logo)
 * **static/examplecard(1-3).(.jpg/.jpeg/.gif)** (card examples for testing, patterns by [Brandon Mills](https://btmills.github.io/geopattern/geopattern.html))
 * **templates/*.html** (templates for the rendered webpages)
