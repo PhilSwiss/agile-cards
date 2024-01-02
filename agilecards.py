@@ -30,7 +30,7 @@ app = Flask(__name__)
 
 
 # start of config:
-servLink = '/agile-cards'
+servLink = '/agilecards'
 testLink = 'http://127.0.0.1:8080'
 imgFormats = ('png', '.jpg', '.jpeg', '.gif')
 # end of config.
@@ -39,6 +39,9 @@ imgFormats = ('png', '.jpg', '.jpeg', '.gif')
 # init vars
 stateFile = os.path.join(app.root_path, 'agilecards.state')
 imgDir = os.path.join(app.root_path, 'static')
+testPort = testLink.split(':')[-1]
+testIP = testLink.split(':')[-2]
+testIP = ''.join(chr for chr in testIP if chr.isdigit() or chr == '.')
 cardAmount = 0
 cardFiles = []
 cardUndo = []
@@ -52,9 +55,6 @@ print(" agilecards v.1.8 started")
 if sys.argv[0] == os.path.basename(__file__):
     # when first param of executed programm equals name
     # of current script, its running local for testing
-    testIP = testLink.split(':')[-2]
-    testIP = ''.join(chr for chr in testIP if chr.isdigit() or chr == '.')
-    testPort = testLink.split(':')[-1]
     baseLink = testLink
 else:
     baseLink = servLink
@@ -71,7 +71,7 @@ else:
 
 # save state when card changes
 def write_status_file():
-    print(" card changed, saving status - " + stateFile)
+    print(" card(s) changed, saving status - " + stateFile)
     with open(stateFile, 'wb') as file:
         pickle.dump([cardFiles, cardAmount, cardUndo], file)
 
@@ -135,6 +135,7 @@ def select():
             statusMsg = "no cards found!"
         else:
             statusMsg = "loaded & randomized cards:"
+            write_status_file()
     else:
         statusMsg = "deck of cards:"
     # include logo if exist
