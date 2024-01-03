@@ -59,7 +59,8 @@ Create a config-file for Apache2:
 
 Copy and paste the following lines to the config-file:
 
-    <VirtualHost *:443>
+    #<VirtualHost *:443>
+    <VirtualHost *:80>
         ServerName  agilecards.example.com
         ServerAdmin webmaster@localhost
         DocumentRoot "/var/www"
@@ -70,6 +71,11 @@ Copy and paste the following lines to the config-file:
           AllowOverride None
           Require all granted
         </Directory>
+
+        #SSLEngine on
+        #SSLCertificateFile /etc/ssl/agilecards.example.com.crt
+        #SSLCertificateKeyFile /etc/ssl/agilecards.example.com.key
+        #SSLCertificateChainFile /etc/ssl/agilecards.example.com-chain.crt
 
         ErrorLog ${APACHE_LOG_DIR}/agilecards_error.log
         CustomLog ${APACHE_LOG_DIR}/agilecards_access.log combined
@@ -92,7 +98,9 @@ Enable the config and restart Apache:
     systemctl reload apache2
 
 
-Access the web-application (https://agilecards.example.com/agilecards)
+Access the web-application (http://agilecards.example.com/agilecards)
+
+**NOTICE:** Make sure to activate SSL & 443, when using in production or on a public network!
     
 
 Files
