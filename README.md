@@ -100,8 +100,45 @@ Enable the config and restart Apache:
 
 Access the web-application (http://agilecards.example.com/agilecards)
 
-**NOTICE:** Make sure to activate SSL & 443, when using in production or on a public network!
+**NOTICE:** Make sure to activate SSL & 443, when using in production or on a public network.
     
+
+Dockerfile
+==========
+
+You may use Docker for easy deploying and running the Agile Cards web-application.
+
+If not done yet, install Docker, this can be done with:
+
+    apt install docker.io
+
+Put your logo, banner and images/cards into the **static**-directory **or** a new directory created on the same level as the **static**-directory. You may also remove images/cards from **static** which you do not need.
+
+Now it's time to build the Docker image with the command:
+
+    DOCKER_BUILDKIT=1 docker build -t "agilecards" .
+
+Deploy the container or just run it with:
+
+    docker run agilecards
+
+By default, the Apache service is listening on port 80. For **testing purpose only**, you may publish this port to your local (e.g. to port 8080) machine running the container with:
+
+    docker run -p 8080:80 agilecards
+
+**NOTICE:** In production or on a public network, please use a reverse proxy with SSL termination like nginx or Apache.
+
+There are some build-time options you may set:
+
+* **HOSTNAME** - hostname of this service, defaults to *agilecards.example.com*
+* **WEBMASTER** - webmaster e-mail address, defaults to *webmaster@localhost*
+* **IMAGESOURCE** - directory with logo, banner and images/cards to use with this service, defaults to *static/*
+
+If you like to use a different directory for storing your images/cards, this 
+directory **must be** created on the same level as the **static**-directory. The build command then is (in case the new directory is named *images*)
+
+    DOCKER_BUILDKIT=1 docker build --build-arg="IMAGESOURCE=images/" -t "agilecards" .
+
 
 Files
 =====
@@ -113,42 +150,6 @@ Files
 * **static/examplecard(1-3).(.jpg/.jpeg/.gif)** (card examples for testing, patterns by [Brandon Mills](https://btmills.github.io/geopattern/geopattern.html))
 * **templates/*.html** (templates for the rendered webpages)
 * **ask-kanban.sh** (a script to download the "Ask-Kanban"-cards by [Huge.io](https://www.hugeio.com/) from [Medium.com](https://blog.huge.io/ending-stale-stand-ups-with-ask-kanban-64de6c084d60))
-
-
-Dockerfile
-==========
-
-You may use Docker for easy deploying and running the agilecards service.
-
-If not done yet, install docker. On Ubuntu, this can be done with
-
-    apt install docker.io
-
-Put your logo, banner and card images into the static folder **or** a new folder created on the same directory level as the static folder. You may also remove images from static which you do not need.
-
-Now it's time to build the docker image with the command
-
-    DOCKER_BUILDKIT=1 docker build -t "agilecards" .
-
-Deploy the container or just run it with
-
-    docker run agilecards
-
-By default, the Apache service listens to port 80. For **testing purpose only** you may publish this port to your local machine running the container with
-
-    docker run -p 8080:80 agilecards
-
-On production, please use a reverse proxy with SSL termination like nginx.
-
-There are some build-time options you may set
-
-* **HOSTNAME** hostname of this service, defaults to *agilecards.example.com*
-* **WEBMASTER** webmaster e-mail address, default to *webmaster@localhost*
-* **IMAGESOURCE** folder with logo, banner and card images to use with this service, defaults to *static/*
-
-If you like to use a different folder for storing your images, this folder **must be** created on the same level as the *static* folder. The build command then is (in case the new folder is named *images*)
-
-    DOCKER_BUILDKIT=1 docker build --build-arg="IMAGESOURCE=images/" -t "agilecards" .
 
 
 Future ideas
