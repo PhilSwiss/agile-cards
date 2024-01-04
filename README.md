@@ -111,7 +111,7 @@ You may use Docker for easy deploying and running the Agile Cards web-applicatio
 
 If not done yet, install Docker, this can be done with:
 
-    apt install docker.io
+    apt install docker.io docker-buildx
 
 Change directory and get the package:
 
