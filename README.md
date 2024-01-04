@@ -130,7 +130,7 @@ Deploy the container or just run it with:
 
 By default, the Apache service is listening on port 80. For **testing purpose only**, you may publish this port to your local (e.g. to port 8080) machine running the container with:
 
-    docker run -p 8080:80 agilecards
+    docker run -p 8080:80 -d agilecards
 
 **NOTICE:** In production or on a public network, please use a reverse proxy with SSL termination like nginx or Apache.
 
