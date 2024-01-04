@@ -41,9 +41,9 @@ Update list of packages and install the required ones:
 Install the Agile Cards web-application:
 
     cd /var/www
-    wget https://github.com/PhilSwiss/agile-cards/archive/refs/heads/main.zip
-    unzip main.zip
-    mv agilecards-main agilecards
+    wget https://github.com/PhilSwiss/agile-cards/archive/refs/heads/main.tar.gz
+    tar -xvf main.tar.gz
+    mv agile-cards-main agilecards
     chown -R www-data:www-data agilecards/
 
 Start and test the web-application (http://127.0.0.1:8080):
@@ -53,8 +53,9 @@ Start and test the web-application (http://127.0.0.1:8080):
     ...
     CTRL-C
 
-Create a config-file for Apache2:
+Remove the state-file and create a config-file for Apache2:
 
+    rm agilecards.state
     nano /etc/apache2/sites-available/agilecards.conf
 
 Copy and paste the following lines to the config-file:
@@ -111,6 +112,11 @@ You may use Docker for easy deploying and running the Agile Cards web-applicatio
 If not done yet, install Docker, this can be done with:
 
     apt install docker.io
+
+Change directory and get the package:
+
+    cd ~
+    git clone https://github.com/PhilSwiss/agile-cards.git
 
 Put your logo, banner and images/cards into the **static**-directory **or** a new directory created on the same level as the **static**-directory. You may also remove images/cards from **static** which you do not need.
 
