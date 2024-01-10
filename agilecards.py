@@ -17,7 +17,9 @@
 # Version 1.7: added reload-function
 # Version 1.8: dynamic fileextensions for imagesfiles
 #
-# last updated by P.Schweizer on 31.12.2023 13:19
+# Version 1.9: added empty state-file, added favicon, moved config to separate file
+#
+# last updated by P.Schweizer on 10.01.2024 16:25
 #
 
 # import modules
@@ -25,39 +27,22 @@ import os
 import sys
 import random
 import pickle
+import configparser
 from flask import Flask, render_template, redirect, make_response, request
 app = Flask(__name__)
 
 
-# start of config:
-servLink = '/agilecards'
-testLink = 'http://127.0.0.1:8080'
-imgFormats = ('.png', '.jpg', '.jpeg', '.gif')
-# end of config.
-
-
-# init vars
+# init vars and defaults (DO NOT EDIT, USE CONFIG FILE!)
+configFile = os.path.join(app.root_path, 'agilecards.cfg')
 stateFile = os.path.join(app.root_path, 'agilecards.state')
 imgDir = os.path.join(app.root_path, 'static')
-testPort = testLink.split(':')[-1]
-testIP = testLink.split(':')[-2]
-testIP = ''.join(chr for chr in testIP if chr.isdigit() or chr == '.')
 cardAmount = 0
 cardFiles = []
 cardUndo = []
 
 
 # show version
-print(" agilecards v.1.8 started")
-
-
-# check and set baseLink
-if sys.argv[0] == os.path.basename(__file__):
-    # when first param of executed programm equals name
-    # of current script, its running local for testing
-    baseLink = testLink
-else:
-    baseLink = servLink
+print(" agilecards v.1.9 started")
 
 
 # load state if exist
@@ -67,6 +52,26 @@ if os.path.isfile(stateFile):
         cardFiles, cardAmount, cardUndo = pickle.load(file)
 else:
     print(" no state-file found.")
+
+
+# load config
+config = configparser.ConfigParser()
+config.read(configFile)
+servLink = config.get('App', 'ServLink', fallback='/agilecards')
+testLink = config.get('App', 'TestLink', fallback='http://127.0.0.1:8080')
+imgFormats = tuple(config.get('App', 'ImgFormats', fallback='.png .jpg .jpeg .gif').split(' '))
+
+
+# check and set baseLink
+if sys.argv[0] == os.path.basename(__file__):
+    # when first param of executed programm equals name
+    # of current script, its running local for testing
+    testIP = testLink.split(':')[-2]
+    testIP = ''.join(chr for chr in testIP if chr.isdigit() or chr == '.')
+    testPort = testLink.split(':')[-1]
+    baseLink = testLink
+else:
+    baseLink = servLink
 
 
 # save state when card changes
@@ -216,6 +221,11 @@ def reload():
     # empty the image list and jump to select page
     del cardFiles[:]
     return redirect(baseLink + "/select")
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return app.send_static_file('favicon.ico')
 
 
 # start local flask server for testing

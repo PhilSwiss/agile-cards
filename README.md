@@ -15,7 +15,7 @@ But when a standup happens **virtual** (e.g. via video-call) a set of **physical
 Information
 ===========
 
-On the first start, the Agile Cards web application (`agilecards.py`) will generate a list of all images/cards found in the **static**-directory. Supported formats are PNG (recommended), JPEG and GIF. This list will then be shuffled and the first image/card can be picked on the **select**-screen by clicking the **pick a card**-button. Every time a question from the image/card is answered and the **ok**-button is clicked, the state of the list is updated and saved to disk (`agilecards.state`). When the list has been completly picked, it will be regenerated and shuffled again, to restart the whole process.
+On the first start, the Agile Cards web application (`agilecards.py`) will generate a list of all images/cards found in the **static**-directory. Supported formats are PNG (recommended), JPG/JPEG and GIF, see the `agilecards.cfg` for more. This list will then be shuffled and the first image/card can be picked on the **select**-screen by clicking the **pick a card**-button. Every time a question from the image/card is answered and the **ok**-button is clicked, the state of the list is updated and saved to disk (`agilecards.state`). When the list has been completly picked, it will be regenerated and shuffled again, to restart the whole process.
 
 To revert the pick of an image/card, replace the word **select** in the URL with **undo**. To regenerate and shuffle the list of all images/cards before the last card has been picked, replace **select** in the URL with **reload**.
 
@@ -46,16 +46,15 @@ Install the Agile Cards web-application:
     mv agile-cards-main agilecards
     chown -R www-data:www-data agilecards/
 
-Start and test the web-application (http://127.0.0.1:8080):
+Start and test the web-applicationa at: http://127.0.0.1:8080 (see `agilecards.cfg` for more)
 
     cd agilecards
     python3 agilecards.py
     ...
     CTRL-C
 
-Remove the state-file and create a config-file for Apache2:
+Create a config-file for Apache2:
 
-    rm agilecards.state
     nano /etc/apache2/sites-available/agilecards.conf
 
 Copy and paste the following lines to the config-file:
@@ -99,10 +98,10 @@ Enable the config and restart Apache:
     systemctl reload apache2
 
 
-Access the web-application (http://agilecards.example.com/agilecards)
+Access the web-application at: http://agilecards.example.com/agilecards (see `agilecards.cfg` for more)
 
 **NOTICE:** Make sure to activate SSL & 443, when using in production or on a public network.
-    
+
 
 Dockerfile
 ==========
@@ -140,7 +139,7 @@ There are some build-time options you may set:
 * **WEBMASTER** - webmaster e-mail address, defaults to *webmaster@localhost*
 * **IMAGESOURCE** - directory with logo, banner and images/cards to use with this service, defaults to *static/*
 
-If you like to use a different directory for storing your images/cards, this 
+If you like to use a different directory for storing your images/cards, this
 directory **must be** created on the same level as the **static**-directory. The build command then is (in case the new directory is named *images*)
 
     DOCKER_BUILDKIT=1 docker build --build-arg="IMAGESOURCE=images/" -t "agilecards" .
@@ -150,19 +149,21 @@ Files
 =====
 
 * **agilecards.py** (the web-application itself)
+* **agilecards.cfg** (config for the web-application)
 * **agilecards.wsgi** (config for Apache mod_wsgi)
-* **Dockerfile** (for building and deploying this service with Docker)
+* **agilecards.state** (state for the web-application)
 * **static/logo.png** (official Agile Cards logo)
 * **static/examplecard(1-3).(.jpg/.jpeg/.gif)** (card examples for testing, patterns by [Brandon Mills](https://btmills.github.io/geopattern/geopattern.html))
 * **templates/*.html** (templates for the rendered webpages)
+* **Dockerfile** (for building and deploying this service with Docker)
 * **ask-kanban.sh** (a script to download the "Ask-Kanban"-cards by [Huge.io](https://www.hugeio.com/) from [Medium.com](https://blog.huge.io/ending-stale-stand-ups-with-ask-kanban-64de6c084d60))
 
 
 Future ideas
 ============
 
-* Move the config to a separate file (agilecards.cfg)
-* Serving a favicon.ico via Flask
+* Move the config to a separate file (agilecards.cfg) - **Done** implemented in version [1.9](https://github.com/PhilSwiss/agile-cards/tree/v1.9)
+* Serving a favicon.ico via Flask - **Done** implemented in version [1.9](https://github.com/PhilSwiss/agile-cards/tree/v1.9)
 * Adding a simple admin-page with: undo, reload and image-management
 
 
