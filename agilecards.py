@@ -32,7 +32,7 @@ app = Flask(__name__)
 # start of config:
 servLink = '/agilecards'
 testLink = 'http://127.0.0.1:8080'
-imgFormats = ('png', '.jpg', '.jpeg', '.gif')
+imgFormats = ('.png', '.jpg', '.jpeg', '.gif')
 # end of config.
 
 
