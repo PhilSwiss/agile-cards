@@ -53,6 +53,8 @@ EOF
 # Install Software needed to run this service
 RUN <<EOF
 apt update
+apt-get -y upgrade
+apt-get -y autoremove
 apt install -y python3 python3-flask apache2 libapache2-mod-wsgi-py3
 EOF
 
@@ -66,6 +68,7 @@ EOF
 # Copy App & Images, remove unneeded files
 COPY agilecards.py /var/www/agilecards
 COPY agilecards.wsgi /var/www/agilecards
+COPY agilecards.cfg /var/www/agilecards
 COPY templates/ /var/www/agilecards/templates
 COPY ${IMAGESOURCE} /var/www/agilecards/static
 RUN rm /var/www/agilecards/static/examplecard1.jpg || true
