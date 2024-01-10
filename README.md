@@ -125,11 +125,21 @@ Now it's time to build the Docker image with the command:
 
 Deploy the container or just run it with:
 
-    docker run agilecards
+    docker run --name "my-agilecards" agilecards
 
 By default, the Apache service is listening on port 80. For **testing purpose only**, you may publish this port to your local (e.g. to port 8080) machine running the container with:
 
-    docker run -p 8080:80 -d agilecards
+    docker run -p 8080:80 --name "my-agilecards" -d agilecards
+
+To use images stored on the Docker **host** instead of the ones inside the container, you've to bind-mount the folder
+
+    docker run -p 8080:80 --mount type=bind,source="/home/user/agilecards/images",target=/var/www/agilecards/static --name "my-agilecards" agilecards
+
+Stoping a container leads to loose of the state file since the storage of a container is not persistent. But you may bind-mount the state file as a local file
+
+    docker run -p 8080:80 --mount type=bind,source="/home/user/my-agilecards.state",target=/var/www/agilecards/agilecards.state --name "my-agilecards" agilecards
+
+The Docker daemon needs **write access** to the file & location!
 
 **NOTICE:** In production or on a public network, please use a reverse proxy with SSL termination like nginx or Apache.
 
